@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace AdvFullstack_Labb1.Models
+namespace AdvFullstack_Labb1.Models.Entities
 {
     public class Booking
     {
@@ -8,11 +9,13 @@ namespace AdvFullstack_Labb1.Models
         public int BookingId { get; set; }
         [Required]
         public DateTime StartTime { get; set; }
-
         public DateTime EndTime => StartTime.AddHours(2);
         public int CustomerAmount { get; set; }
+        [ForeignKey("Customer")]
         public int CustomerId { get; set; }
-        public virtual Customer Customer { get; set; }
-        public virtual ICollection<TableBooking> TableBookings { get; set; } = new List<TableBooking>();
+        public Customer Customer { get; set; }
+        [ForeignKey("Table")]
+        public int TableId { get; set; }
+        public Table Table { get; set; }
     }
 }

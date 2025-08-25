@@ -1,4 +1,4 @@
-﻿using AdvFullstack_Labb1.Models;
+﻿using AdvFullstack_Labb1.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdvFullstack_Labb1.Data
@@ -14,22 +14,8 @@ namespace AdvFullstack_Labb1.Data
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<MenuItem> MenuItems { get; set; }
-        public DbSet<TableBooking> TableBookings { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<TableBooking>().
-                HasKey(tb => new { tb.TableId, tb.BookingId });
-
-            modelBuilder.Entity<TableBooking>()
-                .HasOne(tb => tb.Table)
-                .WithMany(t => t.TableBookings)
-                .HasForeignKey(tb => tb.TableId);
-
-            modelBuilder.Entity<TableBooking>()
-                .HasOne(tb => tb.Booking)
-                .WithMany(b => b.TableBookings)
-                .HasForeignKey(tb => tb.BookingId);
-
             base.OnModelCreating(modelBuilder);
         }
     }

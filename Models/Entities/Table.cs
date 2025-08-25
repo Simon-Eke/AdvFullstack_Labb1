@@ -1,4 +1,4 @@
-﻿namespace AdvFullstack_Labb1.Models
+﻿namespace AdvFullstack_Labb1.Models.Entities
 {
     public class Table
     {
@@ -6,6 +6,6 @@
         public int TableId { get; set; }
         public int Seatings { get; set; }
         public int TableNumber { get; set; }
-        public virtual ICollection<TableBooking> TableBookings { get; set; } = new List<TableBooking>();
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

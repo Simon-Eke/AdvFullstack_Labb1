@@ -22,7 +22,7 @@ namespace AdvFullstack_Labb1.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Admin", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Admin", b =>
                 {
                     b.Property<int>("AdminId")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace AdvFullstack_Labb1.Migrations
                     b.ToTable("Admins");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Booking", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Booking", b =>
                 {
                     b.Property<int>("BookingId")
                         .ValueGeneratedOnAdd()
@@ -59,17 +59,22 @@ namespace AdvFullstack_Labb1.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("DateTime")
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<int>("TableId")
+                        .HasColumnType("int");
 
                     b.HasKey("BookingId");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("TableId");
+
                     b.ToTable("Bookings");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Customer", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Customer", b =>
                 {
                     b.Property<int>("CustomerId")
                         .ValueGeneratedOnAdd()
@@ -77,16 +82,13 @@ namespace AdvFullstack_Labb1.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -95,7 +97,7 @@ namespace AdvFullstack_Labb1.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.MenuItem", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.MenuItem", b =>
                 {
                     b.Property<int>("MenuItemId")
                         .ValueGeneratedOnAdd()
@@ -125,7 +127,7 @@ namespace AdvFullstack_Labb1.Migrations
                     b.ToTable("MenuItems");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Table", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Table", b =>
                 {
                     b.Property<int>("TableId")
                         .ValueGeneratedOnAdd()
@@ -144,64 +146,33 @@ namespace AdvFullstack_Labb1.Migrations
                     b.ToTable("Tables");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.TableBooking", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Booking", b =>
                 {
-                    b.Property<int>("TableId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.HasKey("TableId", "BookingId");
-
-                    b.HasIndex("BookingId");
-
-                    b.ToTable("TableBookings");
-                });
-
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Booking", b =>
-                {
-                    b.HasOne("AdvFullstack_Labb1.Models.Customer", "Customer")
+                    b.HasOne("AdvFullstack_Labb1.Models.Entities.Customer", "Customer")
                         .WithMany("Bookings")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.TableBooking", b =>
-                {
-                    b.HasOne("AdvFullstack_Labb1.Models.Booking", "Booking")
-                        .WithMany("TableBookings")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AdvFullstack_Labb1.Models.Table", "Table")
-                        .WithMany("TableBookings")
+                    b.HasOne("AdvFullstack_Labb1.Models.Entities.Table", "Table")
+                        .WithMany("Bookings")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Booking");
+                    b.Navigation("Customer");
 
                     b.Navigation("Table");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Booking", b =>
-                {
-                    b.Navigation("TableBookings");
-                });
-
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Customer", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Customer", b =>
                 {
                     b.Navigation("Bookings");
                 });
 
-            modelBuilder.Entity("AdvFullstack_Labb1.Models.Table", b =>
+            modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Table", b =>
                 {
-                    b.Navigation("TableBookings");
+                    b.Navigation("Bookings");
                 });
 #pragma warning restore 612, 618
         }

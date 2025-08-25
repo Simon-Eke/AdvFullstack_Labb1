@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdvFullstack_Labb1.Models
+namespace AdvFullstack_Labb1.Models.Entities
 {
     public class Customer
     {
@@ -9,10 +9,9 @@ namespace AdvFullstack_Labb1.Models
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }
+        [Required]
         [MaxLength(20)]
-        public string? PhoneNumber { get; set; }
-        [MaxLength(100)]
-        public string? Email { get; set; }
-        public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
+        public string PhoneNumber { get; set; }
+        public ICollection<Booking> Bookings { get; set; } = new List<Booking>();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AdvFullstack_Labb1.DTOs
+﻿namespace AdvFullstack_Labb1.Models.DTOs
 {
     public class LoginRequestDto
     {

@@ -1,5 +1,11 @@
 
+using AdvFullstack_Labb1.Conventions;
 using AdvFullstack_Labb1.Data;
+using AdvFullstack_Labb1.Repositories;
+using AdvFullstack_Labb1.Repositories.IRepositories;
+using AdvFullstack_Labb1.Services;
+using AdvFullstack_Labb1.Services.IServices;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdvFullstack_Labb1
@@ -12,15 +18,23 @@ namespace AdvFullstack_Labb1
 
             // Add services to the container.
 
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-
             builder.Services.AddDbContext<MyCafeLabb1Context>(options =>
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+
+            builder.Services.AddScoped<ITableRepository, TableRepository>();
+            builder.Services.AddScoped<ITableService, TableService>();
+
+            builder.Services.AddControllers(options =>
+            {
+                options.Conventions.Add(new RouteTokenTransformerConvention(new SlugifyParameterTransformer()));
+            });
+            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
+            
 
             var app = builder.Build();
 
@@ -37,6 +51,7 @@ namespace AdvFullstack_Labb1
 
 
             app.MapControllers();
+
 
             app.Run();
         }

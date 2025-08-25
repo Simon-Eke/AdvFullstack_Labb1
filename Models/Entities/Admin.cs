@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdvFullstack_Labb1.Models
+namespace AdvFullstack_Labb1.Models.Entities
 {
     public class Admin
     {
