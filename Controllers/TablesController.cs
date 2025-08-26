@@ -71,7 +71,7 @@ namespace AdvFullstack_Labb1.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<IActionResult> PutTable(int id, [FromBody] TableDto tableDto)
         {
-            if (id != tableDto.TableId)
+            if (id != tableDto.Id)
                 return BadRequest();
 
             var success = await _service.UpdateTableAsync(tableDto);

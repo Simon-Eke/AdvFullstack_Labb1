@@ -2,7 +2,7 @@
 {
     public class TableDto
     {
-        public int TableId { get; set; }
+        public int Id { get; set; }
         public int Seatings { get; set; }
         public int TableNumber { get; set; }
     }

@@ -2,13 +2,7 @@
 
 namespace AdvFullstack_Labb1.Repositories.IRepositories
 {
-    public interface IAdminRepository
+    public interface IAdminRepository : IRepository<Admin>
     {
-        Task<List<Admin>> GetAllAsync();
-        Task<Admin> GetByIdAsync(int adminId);
-        Task<int> CreateAsync(Admin newAdmin);
-        Task<bool> UpdateAsync(Admin admin);
-        Task<bool> PatchAsync(Admin admin);
-        Task<bool> DeleteAsync(int adminId);
     }
 }

@@ -2,11 +2,8 @@
 
 namespace AdvFullstack_Labb1.Models.Entities
 {
-    public class Admin
+    public class Admin : BaseEntity
     {
-        // AdminId, Username, PasswordHash
-        [Key]
-        public int AdminId { get; set; }
         [Required]
         [MaxLength(50)]
         public string Username { get; set; }

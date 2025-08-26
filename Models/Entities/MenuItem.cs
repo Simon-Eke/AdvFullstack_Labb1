@@ -3,11 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AdvFullstack_Labb1.Models.Entities
 {
-    public class MenuItem
+    public class MenuItem : BaseEntity
     {
-        // MenuItemId, Name, Price, IsPopular, ImageUrl
-        [Key]
-        public int MenuItemId { get; set; }
         [Required]
         [MaxLength(200)]
         public string Name { get; set; }

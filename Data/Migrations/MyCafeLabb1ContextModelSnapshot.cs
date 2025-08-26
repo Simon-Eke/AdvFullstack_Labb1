@@ -24,11 +24,11 @@ namespace AdvFullstack_Labb1.Migrations
 
             modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Admin", b =>
                 {
-                    b.Property<int>("AdminId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -40,18 +40,18 @@ namespace AdvFullstack_Labb1.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.HasKey("AdminId");
+                    b.HasKey("Id");
 
                     b.ToTable("Admins");
                 });
 
             modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Booking", b =>
                 {
-                    b.Property<int>("BookingId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CustomerAmount")
                         .HasColumnType("int");
@@ -65,7 +65,7 @@ namespace AdvFullstack_Labb1.Migrations
                     b.Property<int>("TableId")
                         .HasColumnType("int");
 
-                    b.HasKey("BookingId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
@@ -76,11 +76,11 @@ namespace AdvFullstack_Labb1.Migrations
 
             modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CustomerId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -92,18 +92,18 @@ namespace AdvFullstack_Labb1.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("Id");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.MenuItem", b =>
                 {
-                    b.Property<int>("MenuItemId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MenuItemId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
@@ -122,18 +122,18 @@ namespace AdvFullstack_Labb1.Migrations
                         .HasPrecision(10, 2)
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("MenuItemId");
+                    b.HasKey("Id");
 
                     b.ToTable("MenuItems");
                 });
 
             modelBuilder.Entity("AdvFullstack_Labb1.Models.Entities.Table", b =>
                 {
-                    b.Property<int>("TableId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TableId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Seatings")
                         .HasColumnType("int");
@@ -141,7 +141,7 @@ namespace AdvFullstack_Labb1.Migrations
                     b.Property<int>("TableNumber")
                         .HasColumnType("int");
 
-                    b.HasKey("TableId");
+                    b.HasKey("Id");
 
                     b.ToTable("Tables");
                 });

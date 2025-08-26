@@ -16,11 +16,11 @@ namespace AdvFullstack_Labb1.Services
         }
         public async Task<List<TableDto>> GetAllTablesAsync()
         {
-            var tables = await _tableRepo.GetAllTablesAsync();
+            var tables = await _tableRepo.GetAllAsync();
 
             var tableDtoList = tables.Select(t => new TableDto
             {
-                TableId = t.TableId,
+                Id = t.Id,
                 Seatings = t.Seatings,
                 TableNumber = t.TableNumber
             }).ToList();
@@ -34,7 +34,7 @@ namespace AdvFullstack_Labb1.Services
 
             var availableTableDtos = tables.Select(t => new TableDto
             {
-                TableId = t.TableId,
+                Id = t.Id,
                 Seatings = t.Seatings,
                 TableNumber = t.TableNumber
             }).ToList();
@@ -43,14 +43,14 @@ namespace AdvFullstack_Labb1.Services
         }
         public async Task<TableDto> GetTableByIdAsync(int tableId)
         {
-            var table = await _tableRepo.GetTableByIdAsync(tableId);
+            var table = await _tableRepo.GetByIdAsync(tableId);
 
             if (table == null)
                 return null;
 
             var tableDto = new TableDto
             {
-                TableId = table.TableId,
+                Id = table.Id,
                 Seatings = table.Seatings,
                 TableNumber = table.TableNumber
             };
@@ -65,26 +65,26 @@ namespace AdvFullstack_Labb1.Services
                 TableNumber = newTable.TableNumber
             };
 
-            var newTableId = await _tableRepo.CreateTableAsync(table);
+            var newTableId = await _tableRepo.CreateAsync(table);
 
             return newTableId;
         }
         public async Task<bool> UpdateTableAsync(TableDto table)
         {
-            var existingTable = await _tableRepo.GetTableByIdAsync(table.TableId);
+            var existingTable = await _tableRepo.GetByIdAsync(table.Id);
             if (existingTable == null)
                 return false;
 
             existingTable.Seatings = table.Seatings;
             existingTable.TableNumber = table.TableNumber;
 
-            await _tableRepo.UpdateTableAsync(existingTable);
+            await _tableRepo.UpdateAsync(existingTable);
 
             return true;
         }
         public async Task<bool> PatchTableAsync(int id, TablePatchDto patchTable)
         {
-            var existingTable = await _tableRepo.GetTableByIdAsync(id);
+            var existingTable = await _tableRepo.GetByIdAsync(id);
             if (existingTable == null)
                 return false;
 
@@ -94,7 +94,7 @@ namespace AdvFullstack_Labb1.Services
             if (patchTable.TableNumber.HasValue)
                 existingTable.TableNumber = patchTable.TableNumber.Value;
 
-            var success = await _tableRepo.PatchTableAsync(existingTable);
+            var success = await _tableRepo.UpdateAsync(existingTable);
             if (success != true)
                 return false;
 
@@ -102,11 +102,11 @@ namespace AdvFullstack_Labb1.Services
         }
         public async Task<bool> DeleteTableAsync(int tableId)
         {
-            var existingTable = await _tableRepo.GetTableByIdAsync(tableId);
+            var existingTable = await _tableRepo.GetByIdAsync(tableId);
             if (existingTable == null)
                 return false;
 
-            var success = await _tableRepo.DeleteTableAsync(tableId);
+            var success = await _tableRepo.DeleteAsync(tableId);
             if (success != true)
                 return false;
 

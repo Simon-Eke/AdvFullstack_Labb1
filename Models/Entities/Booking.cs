@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AdvFullstack_Labb1.Models.Entities
 {
-    public class Booking
+    public class Booking : BaseEntity
     {
-        // BookingId, Date, Time, CustomerAmount
-        public int BookingId { get; set; }
         [Required]
         public DateTime StartTime { get; set; }
         public DateTime EndTime => StartTime.AddHours(2);

@@ -49,7 +49,7 @@ namespace AdvFullstack_Labb1.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAdmin(int id, Admin admin)
         {
-            if (id != admin.AdminId)
+            if (id != admin.Id)
             {
                 return BadRequest();
             }
@@ -83,7 +83,7 @@ namespace AdvFullstack_Labb1.Controllers
             _context.Admins.Add(admin);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAdmin", new { id = admin.AdminId }, admin);
+            return CreatedAtAction("GetAdmin", new { id = admin.Id }, admin);
         }
 
         // DELETE: api/Admins/5
@@ -104,7 +104,7 @@ namespace AdvFullstack_Labb1.Controllers
 
         private bool AdminExists(int id)
         {
-            return _context.Admins.Any(e => e.AdminId == id);
+            return _context.Admins.Any(e => e.Id == id);
         }
     }
 }
