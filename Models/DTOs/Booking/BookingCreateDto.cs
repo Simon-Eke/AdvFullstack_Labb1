@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace AdvFullstack_Labb1.Models.DTOs.Booking
+﻿namespace AdvFullstack_Labb1.Models.DTOs.Booking
 {
-    public class BookingDto
+    public class BookingCreateDto
     {
-        public int Id { get; set; }
         public int CustomerId { get; set; }
         public int TableId { get; set; }
         public int CustomerAmount { get; set; }

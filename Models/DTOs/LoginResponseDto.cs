@@ -2,5 +2,6 @@
 {
     public class LoginResponseDto
     {
+        public string Jwt { get; set; }
     }
 }

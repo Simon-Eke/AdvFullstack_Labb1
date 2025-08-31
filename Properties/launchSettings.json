@@ -36,6 +36,20 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "MyCafeApi": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7297;http://localhost:5234",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ConnectionStrings__DefaultConnection": "Data Source=(localdb)\\MSSQLLocalDB;Database=MyCafe;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;",
+        "Jwt__Key": "MySuperSecretKeyThatNoManCanGuessButIAmNoMan",
+        "Jwt__Issuer": "www.ourdomain.com/",
+        "Jwt__Audience": "www.ourdomain.com/"
+      }
     }
   }
 }
