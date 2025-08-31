@@ -8,7 +8,6 @@ namespace AdvFullstack_Labb1.Services
     public class TableService : ITableService
     {
         private readonly ITableRepository _tableRepo;
-
         public TableService(ITableRepository tableRepo)
         {
             _tableRepo = tableRepo;
