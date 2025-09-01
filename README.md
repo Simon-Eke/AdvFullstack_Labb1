@@ -1,3 +1,11 @@
+## Libraries and design
+
+- EF Core
+- Argon2id
+- Repository Service Pattern
+- ASP.NET with Controllers
+
+
 ## Notes: 
 
 ### General
@@ -13,3 +21,12 @@
 - Abstracting EF Core Unit of Work for better decoupling in the transaction???
 - Is the client side doing the point and click or the backend?
 - Should I restrict bigger groups to find one big table or enable them to add tables together?
+
+## Todo:
+
+- Add lifetimes for DI (Singleton, Scoped)
+- Seeda admin
+- Seeda data?????
+- Testa endpoints
+- Dubbelkolla uppgiften
+- Dubbelkolla Readme:n
