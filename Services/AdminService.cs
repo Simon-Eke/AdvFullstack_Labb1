@@ -2,10 +2,11 @@
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.Shared;
+using AdvFullstack_Labb1.Services.IServices;
 
 namespace AdvFullstack_Labb1.Services
 {
-    public class AdminService
+    public class AdminService : IAdminService 
     {
         private readonly IAdminRepository _repo;
         private readonly PasswordHasher _hasher;

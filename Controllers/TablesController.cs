@@ -1,6 +1,4 @@
-﻿using AdvFullstack_Labb1.Data;
-using AdvFullstack_Labb1.Models.DTOs.Table;
-using AdvFullstack_Labb1.Models.Entities;
+﻿using AdvFullstack_Labb1.Models.DTOs.Table;
 using AdvFullstack_Labb1.Services.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -26,14 +24,15 @@ namespace AdvFullstack_Labb1.Controllers
         [AllowAnonymous]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult GetTables()
+        public async Task<ActionResult<List<TableDto>>> GetTables()
         {
-            // List of tables
-            return Ok();
+            var tables = await _service.GetAllTablesAsync();
+
+            return Ok(tables);
         }
 
         [AllowAnonymous]
-        [HttpGet("search")]
+        [HttpGet("available")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<List<TableDto>>> GetAvailableTables([FromQuery] int wantedSeats, [FromQuery] DateTime desiredStartTime)
@@ -43,7 +42,10 @@ namespace AdvFullstack_Labb1.Controllers
             return Ok(tables);
         }
 
+        [AllowAnonymous]
         [HttpGet("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TableDto>> GetTableById(int id)
         {
             var table = await _service.GetTableByIdAsync(id);
@@ -55,12 +57,14 @@ namespace AdvFullstack_Labb1.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<ActionResult<int>> PostTable(TableCreateDto newTable)
         {
             int tableId = await _service.CreateTableAsync(newTable);
 
             return CreatedAtAction(
                 nameof(GetTableById),
+                new { id = tableId },
                 new { id = tableId }
                 );
         }

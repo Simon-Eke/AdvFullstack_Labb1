@@ -2,7 +2,6 @@
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.IServices;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AdvFullstack_Labb1.Services
 {

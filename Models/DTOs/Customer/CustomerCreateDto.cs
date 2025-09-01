@@ -1,8 +1,7 @@
 ﻿namespace AdvFullstack_Labb1.Models.DTOs.Customer
 {
-    public class CustomerDto
+    public class CustomerCreateDto
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string PhoneNumber { get; set; }
     }
