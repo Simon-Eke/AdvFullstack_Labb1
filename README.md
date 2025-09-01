@@ -8,6 +8,8 @@
 - FluentValidation
 ### Booking
 - If Wanted Seats > Available seats, highlight other dates and times when available.
-- Sökning på bara tid/platser?
+- Implement holding/reservation with countdown
+- Search for only time/date/seats?
+- Abstracting EF Core Unit of Work for better decoupling in the transaction???
 - Is the client side doing the point and click or the backend?
 - Should I restrict bigger groups to find one big table or enable them to add tables together?

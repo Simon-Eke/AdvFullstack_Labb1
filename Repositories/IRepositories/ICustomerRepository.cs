@@ -4,5 +4,6 @@ namespace AdvFullstack_Labb1.Repositories.IRepositories
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
+        Task<Customer?> GetByNameAndPhoneAsync(string name, string phoneNumber);
     }
 }

@@ -1,17 +1,22 @@
-﻿using AdvFullstack_Labb1.Models.DTOs.Booking;
+﻿using AdvFullstack_Labb1.Data;
+using AdvFullstack_Labb1.Models.DTOs.Booking;
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdvFullstack_Labb1.Services
 {
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository _repo;
-
-        public BookingService(IBookingRepository repo)
+        private readonly ICustomerRepository _customerRepo;
+        private readonly ITableRepository _tableRepo;
+        private readonly MyCafeLabb1Context _context;
+        public BookingService(IBookingRepository repo, MyCafeLabb1Context context)
         {
             _repo = repo;
+            _context = context;
         }
 
         public async Task<List<BookingDto>> GetAllAsync()
@@ -61,6 +66,54 @@ namespace AdvFullstack_Labb1.Services
             var newBookingId = await _repo.CreateAsync(booking);
 
             return newBookingId;
+        }
+
+        public async Task<bool> TryCreateBookingAsync(BookingRequestDto requestDto)
+        {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            bool isStillAvailable = await _tableRepo
+                .IsAvailableAsync(
+                    requestDto.TableId, 
+                    requestDto.StartTime);
+                
+            if (!isStillAvailable)
+                return false;
+
+            var existingCustomer = await _customerRepo
+                .GetByNameAndPhoneAsync(
+                    requestDto.Name, 
+                    requestDto.PhoneNumber);
+
+            int customerId;
+
+            if (existingCustomer == null)
+            {
+                var customer = new Customer
+                {
+                    Name = requestDto.Name,
+                    PhoneNumber = requestDto.PhoneNumber
+                };
+
+                customerId = await _customerRepo.CreateAsync(customer);
+            }
+            else
+            {
+                customerId = existingCustomer.Id;
+            }
+
+            var newBooking = new Booking
+            {
+                StartTime = requestDto.StartTime,
+                CustomerAmount = requestDto.CustomerAmount,
+                TableId = requestDto.TableId,
+                CustomerId = customerId
+            };
+
+            await _repo.CreateAsync(newBooking);
+            await transaction.CommitAsync();
+
+            return true;
         }
         public async Task<bool> UpdateAsync(BookingDto booking)
         {

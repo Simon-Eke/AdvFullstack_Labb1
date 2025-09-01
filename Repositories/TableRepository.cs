@@ -13,13 +13,24 @@ namespace AdvFullstack_Labb1.Repositories
         {
             var desiredEndTime = desiredStartTime.AddHours(2);
 
-            var availableTables = await _context.Tables
+            var availableTables = await _dbSet
                 .Where(t => t.Seatings >= wantedSeats)
                 .Where(t => t.Bookings.All(b =>
                     b.StartTime >= desiredEndTime || b.EndTime <= desiredStartTime))
                 .ToListAsync();
 
             return availableTables;
+        }
+
+        public async Task<bool> IsAvailableAsync(int id, DateTime startTime)
+        {
+            var endTime = startTime.AddHours(2);
+            
+            return await _dbSet
+                .Where(t => t.Id == id)
+                .Where(t => t.Bookings.All(b =>
+                    b.StartTime >= endTime || b.EndTime <= startTime))
+                .AnyAsync();
         }
     }
 }
