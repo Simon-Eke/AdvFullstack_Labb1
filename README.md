@@ -8,6 +8,11 @@
 
 ## Notes: 
 
+### Config
+- Seeding admin at runtime
+- Kebab-casing my url endpoints
+- Dependency Injection AddServices() 
+
 ### General
 - Rate Limiter?
 - If search query, wait with a buffer for user to stop clicking.
@@ -24,9 +29,9 @@
 
 ## Todo:
 
-- Add lifetimes for DI (Singleton, Scoped)
-- Seeda admin
-- Seeda data?????
+- DONE - Add lifetimes for DI (Singleton, Scoped)
+- DONE - Seeda admin
+- DONE - Seeda data?????
 - Testa endpoints
 - Dubbelkolla uppgiften
 - Dubbelkolla Readme:n

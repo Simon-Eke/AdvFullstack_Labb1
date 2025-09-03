@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace AdvFullstack_Labb1.Conventions
+namespace AdvFullstack_Labb1.Configuration
 {
     public class SlugifyParameterTransformer : IOutboundParameterTransformer
     {

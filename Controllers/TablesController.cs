@@ -58,7 +58,7 @@ namespace AdvFullstack_Labb1.Controllers
 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<int>> PostTable(TableCreateDto newTable)
+        public async Task<ActionResult<int>> PostTable([FromBody] TableCreateDto newTable)
         {
             int tableId = await _service.CreateTableAsync(newTable);
 

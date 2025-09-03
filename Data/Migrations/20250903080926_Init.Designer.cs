@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvFullstack_Labb1.Migrations
 {
     [DbContext(typeof(MyCafeLabb1Context))]
-    [Migration("20250826093000_init")]
-    partial class init
+    [Migration("20250903080926_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
