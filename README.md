@@ -29,9 +29,4 @@
 
 ## Todo:
 
-- DONE - Add lifetimes for DI (Singleton, Scoped)
-- DONE - Seeda admin
-- DONE - Seeda data?????
-- Testa endpoints
-- Dubbelkolla uppgiften
-- Dubbelkolla Readme:n
+- DONE 

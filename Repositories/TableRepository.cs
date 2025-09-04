@@ -15,8 +15,8 @@ namespace AdvFullstack_Labb1.Repositories
 
             var availableTables = await _dbSet
                 .Where(t => t.Seatings >= wantedSeats)
-                .Where(t => t.Bookings.All(b =>
-                    b.StartTime >= desiredEndTime || b.EndTime <= desiredStartTime))
+                .Where(t => !t.Bookings.Any(b =>
+                    b.StartTime < desiredEndTime && b.EndTime > desiredStartTime))
                 .ToListAsync();
 
             return availableTables;
@@ -28,8 +28,8 @@ namespace AdvFullstack_Labb1.Repositories
             
             return await _dbSet
                 .Where(t => t.Id == id)
-                .Where(t => t.Bookings.All(b =>
-                    b.StartTime >= endTime || b.EndTime <= startTime))
+                .Where(t => !t.Bookings.Any(b =>
+                    b.StartTime < endTime && b.EndTime > startTime))
                 .AnyAsync();
         }
     }

@@ -32,33 +32,10 @@ namespace AdvFullstack_Labb1.Services
 
             var jwt = new LoginResponseDto()
             {
-                Jwt = GenerateJwt(admin)
+                Jwt = JwtGenerator.GenerateJwt(_config, admin)
             };
 
             return jwt;
-        }
-
-        private string GenerateJwt(Admin admin)
-        {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.Name, admin.Username)
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: credentials
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-
-
         }
     }
 }

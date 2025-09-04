@@ -2,6 +2,7 @@
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.IServices;
+using AdvFullstack_Labb1.Services.Shared;
 
 namespace AdvFullstack_Labb1.Services
 {
@@ -28,7 +29,9 @@ namespace AdvFullstack_Labb1.Services
 
         public async Task<List<TableDto>> GetAvailableTablesAsync(int wantedSeats, DateTime desiredStartTime)
         {
-            var tables = await _tableRepo.GetAvailableTablesAsync(wantedSeats, desiredStartTime);
+            var roundedStartTime = BookingHelper.RoundStartTime(desiredStartTime);
+            
+            var tables = await _tableRepo.GetAvailableTablesAsync(wantedSeats, roundedStartTime);
 
             var availableTableDtos = tables.Select(t => new TableDto
             {

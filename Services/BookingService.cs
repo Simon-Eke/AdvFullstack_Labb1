@@ -3,19 +3,28 @@ using AdvFullstack_Labb1.Models.DTOs.Booking;
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.IServices;
+using AdvFullstack_Labb1.Services.Shared;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdvFullstack_Labb1.Services
 {
     public class BookingService : IBookingService
     {
+        private const int bookingDurationInHours = 2; // Hours
+        
         private readonly IBookingRepository _repo;
         private readonly ICustomerRepository _customerRepo;
         private readonly ITableRepository _tableRepo;
         private readonly MyCafeLabb1Context _context;
-        public BookingService(IBookingRepository repo, MyCafeLabb1Context context)
+        public BookingService(
+            IBookingRepository repo,
+            ICustomerRepository customerRepo,
+            ITableRepository tableRepo,
+            MyCafeLabb1Context context)
         {
             _repo = repo;
+            _customerRepo = customerRepo;
+            _tableRepo = tableRepo;
             _context = context;
         }
 
@@ -55,10 +64,13 @@ namespace AdvFullstack_Labb1.Services
         }
         public async Task<int> CreateAsync(BookingCreateDto newBooking)
         {
+            var roundedStartTime = BookingHelper.RoundStartTime(newBooking.StartTime);
+
             var booking = new Booking
             {
                 CustomerAmount = newBooking.CustomerAmount,
-                StartTime = newBooking.StartTime,
+                StartTime = roundedStartTime,
+                EndTime = roundedStartTime.AddHours(bookingDurationInHours),
                 CustomerId = newBooking.CustomerId,
                 TableId = newBooking.TableId
             };
@@ -72,10 +84,12 @@ namespace AdvFullstack_Labb1.Services
         {
             using var transaction = await _context.Database.BeginTransactionAsync();
 
+            var roundedStartTime = BookingHelper.RoundStartTime(requestDto.StartTime);
+
             bool isStillAvailable = await _tableRepo
                 .IsAvailableAsync(
                     requestDto.TableId, 
-                    requestDto.StartTime);
+                    roundedStartTime);
                 
             if (!isStillAvailable)
                 return false;
@@ -104,7 +118,8 @@ namespace AdvFullstack_Labb1.Services
 
             var newBooking = new Booking
             {
-                StartTime = requestDto.StartTime,
+                StartTime = roundedStartTime,
+                EndTime = roundedStartTime.AddHours(bookingDurationInHours),
                 CustomerAmount = requestDto.CustomerAmount,
                 TableId = requestDto.TableId,
                 CustomerId = customerId
@@ -121,7 +136,10 @@ namespace AdvFullstack_Labb1.Services
             if (existingBooking == null)
                 return false;
 
-            existingBooking.StartTime = booking.StartTime;
+            var roundedStartTime = BookingHelper.RoundStartTime(booking.StartTime);
+
+            existingBooking.StartTime = roundedStartTime;
+            existingBooking.EndTime = roundedStartTime.AddHours(bookingDurationInHours);
             existingBooking.CustomerAmount = booking.CustomerAmount;
             existingBooking.CustomerId = booking.CustomerId;
             existingBooking.TableId = booking.TableId;
@@ -138,7 +156,12 @@ namespace AdvFullstack_Labb1.Services
                 return false;
 
             if (patchBooking.StartTime.HasValue)
-                existingBooking.StartTime = patchBooking.StartTime.Value;
+            {
+                var roundedStartTime = BookingHelper.RoundStartTime(patchBooking.StartTime.Value);
+
+                existingBooking.StartTime = roundedStartTime;
+                existingBooking.EndTime = roundedStartTime.AddHours(bookingDurationInHours);
+            }
 
             if (patchBooking.CustomerAmount.HasValue)
                 existingBooking.CustomerAmount = patchBooking.CustomerAmount.Value;
@@ -167,23 +190,5 @@ namespace AdvFullstack_Labb1.Services
 
             return true;
         }
-        /*
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            bool isStillAvailable = await _context.Tables
-                .Where(t => t.Id == requestedTableId)
-                .Where(t => t.Bookings.All(b =>
-                    b.StartTime >= desiredEndTime || b.EndTime <= desiredStartTime))
-                .AnyAsync();
-
-            if (!isStillAvailable)
-                return false;
-
-            _context.Bookings.Add(newBooking);
-            await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-         
-         
-         */
     }
 }

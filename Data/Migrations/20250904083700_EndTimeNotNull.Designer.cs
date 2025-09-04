@@ -4,6 +4,7 @@ using AdvFullstack_Labb1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdvFullstack_Labb1.Migrations
 {
     [DbContext(typeof(MyCafeLabb1Context))]
-    partial class MyCafeLabb1ContextModelSnapshot : ModelSnapshot
+    [Migration("20250904083700_EndTimeNotNull")]
+    partial class EndTimeNotNull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -7,7 +7,7 @@ namespace AdvFullstack_Labb1.Models.Entities
     {
         [Required]
         public DateTime StartTime { get; set; }
-        public DateTime EndTime => StartTime.AddHours(2);
+        public DateTime EndTime { get; set; }
         public int CustomerAmount { get; set; }
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
