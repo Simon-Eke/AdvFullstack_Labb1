@@ -13,23 +13,33 @@ namespace AdvFullstack_Labb1.Configuration
             var db = scope.ServiceProvider.GetRequiredService<MyCafeLabb1Context>();
             var hasher = scope.ServiceProvider.GetRequiredService<PasswordHasher>();
 
-            if (!await db.Admins.AnyAsync())
+            var adminsToSeed = new List<(string Username, string PlainPassword)>
             {
-                var admin = new Admin
+                ("SimonEkeAdmin2", "SuperSecure69!")
+            };
+
+            foreach (var (username, password) in adminsToSeed)
+            {
+                var existingAdmin = await db.Admins.FirstOrDefaultAsync(a => a.Username == username);
+
+                if (existingAdmin == null)
                 {
-                    Username = "SimonEkeAdmin",
-                    PasswordHash = hasher.HashPassword("SuperSecure69")
-                };
+                    var admin = new Admin
+                    {
+                        Username = username,
+                        PasswordHash = hasher.HashPassword(password)
+                    };
 
-                db.Admins.Add(admin);
-                await db.SaveChangesAsync();
+                    db.Admins.Add(admin);
+                    Console.WriteLine($"Seeded admin: {username}");
+                }
+                else
+                {
+                    Console.WriteLine($"Admin '{username}' already exists");
+                }
+            }
 
-                Console.WriteLine("Admin user seeded");
-            }
-            else
-            {
-                Console.WriteLine("Admin user already exists");
-            }
+            await db.SaveChangesAsync();
         }
     }
 }

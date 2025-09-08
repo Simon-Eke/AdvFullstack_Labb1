@@ -18,6 +18,16 @@ namespace AdvFullstack_Labb1
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMvcClient", builder =>
+                {
+                    builder
+                        .WithOrigins("https://localhost:7235")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
+            });
 
             builder.WebHost.ConfigureKestrel(options =>
             {
@@ -97,6 +107,8 @@ namespace AdvFullstack_Labb1
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors("AllowMvcClient");
 
             app.UseAuthentication();
             app.UseAuthorization();
