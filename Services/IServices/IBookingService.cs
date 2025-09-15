@@ -6,9 +6,8 @@ namespace AdvFullstack_Labb1.Services.IServices
     {
         Task<List<BookingDto>> GetAllAsync();
         Task<BookingDto> GetByIdAsync(int bookingId);
-        Task<int> CreateAsync(BookingCreateDto newBooking);
         Task<bool> TryCreateBookingAsync(BookingRequestDto requestDto);
-        Task<bool> UpdateAsync(BookingDto booking);
+        Task<bool> TryUpdateBookingAsync(BookingUpdateRequestDto booking);
         Task<bool> PatchAsync(int id, BookingPatchDto patchBooking);
         Task<bool> DeleteAsync(int bookingId);
     }

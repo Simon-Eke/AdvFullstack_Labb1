@@ -42,20 +42,6 @@ namespace AdvFullstack_Labb1.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult<int>> Create(BookingCreateDto newBooking)
-        {
-            int bookingId = await _service.CreateAsync(newBooking);
-
-            return CreatedAtAction(
-                nameof(GetById),
-                new { id = bookingId },
-                new { id = bookingId }
-                );
-        }
-
-        [AllowAnonymous]
-        [HttpPost("book")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> ConfirmBooking(BookingRequestDto request)
@@ -70,19 +56,19 @@ namespace AdvFullstack_Labb1.Controllers
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Put(int id, [FromBody] BookingDto bookingDto)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingUpdateRequestDto request)
         {
-            if (id != bookingDto.Id)
+            if (id != request.Id)
                 return BadRequest();
 
-            var success = await _service.UpdateAsync(bookingDto);
+            var success = await _service.TryUpdateBookingAsync(request);
 
             if (!success)
-                return NotFound();
+                return Conflict();
 
-            return NoContent();
+            return Ok();
         }
 
         [HttpPatch("{id:int}")]

@@ -22,13 +22,14 @@ namespace AdvFullstack_Labb1.Repositories
             return availableTables;
         }
 
-        public async Task<bool> IsAvailableAsync(int id, DateTime startTime)
+        public async Task<bool> IsAvailableAsync(int id, DateTime startTime, int? excludeBookingId = null)
         {
             var endTime = startTime.AddHours(2);
             
             return await _dbSet
                 .Where(t => t.Id == id)
                 .Where(t => !t.Bookings.Any(b =>
+                    b.Id != excludeBookingId &&
                     b.StartTime < endTime && b.EndTime > startTime))
                 .AnyAsync();
         }

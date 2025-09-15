@@ -62,23 +62,6 @@ namespace AdvFullstack_Labb1.Services
 
             return bookingDto;
         }
-        public async Task<int> CreateAsync(BookingCreateDto newBooking)
-        {
-            var roundedStartTime = BookingHelper.RoundStartTime(newBooking.StartTime);
-
-            var booking = new Booking
-            {
-                CustomerAmount = newBooking.CustomerAmount,
-                StartTime = roundedStartTime,
-                EndTime = roundedStartTime.AddHours(bookingDurationInHours),
-                CustomerId = newBooking.CustomerId,
-                TableId = newBooking.TableId
-            };
-
-            var newBookingId = await _repo.CreateAsync(booking);
-
-            return newBookingId;
-        }
 
         public async Task<bool> TryCreateBookingAsync(BookingRequestDto requestDto)
         {
@@ -130,25 +113,66 @@ namespace AdvFullstack_Labb1.Services
 
             return true;
         }
-        public async Task<bool> UpdateAsync(BookingDto booking)
+
+        public async Task<bool> TryUpdateBookingAsync(BookingUpdateRequestDto booking)
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
             var existingBooking = await _repo.GetByIdAsync(booking.Id);
             if (existingBooking == null)
                 return false;
 
             var roundedStartTime = BookingHelper.RoundStartTime(booking.StartTime);
 
+            var isStillAvailable = await _tableRepo
+                .IsAvailableAsync(
+                    booking.TableId, 
+                    roundedStartTime, 
+                    excludeBookingId: booking.Id);
+
+            if (!isStillAvailable)
+                return false;
+
+            var existingCustomer = await _customerRepo
+                .GetByNameAndPhoneAsync(
+                    booking.Name,
+                    booking.PhoneNumber);
+
+            int customerId;
+
+            if (existingCustomer == null)
+            {
+                var customer = new Customer
+                {
+                    Name = booking.Name,
+                    PhoneNumber = booking.PhoneNumber
+                };
+
+                customerId = await _customerRepo.CreateAsync(customer);
+            }
+            else
+            {
+                customerId = existingCustomer.Id;
+            }
+
             existingBooking.StartTime = roundedStartTime;
             existingBooking.EndTime = roundedStartTime.AddHours(bookingDurationInHours);
             existingBooking.CustomerAmount = booking.CustomerAmount;
-            existingBooking.CustomerId = booking.CustomerId;
+            existingBooking.CustomerId = customerId;
             existingBooking.TableId = booking.TableId;
 
-
             await _repo.UpdateAsync(existingBooking);
+            await transaction.CommitAsync();
 
             return true;
         }
+        
+        /// <summary>
+        /// Deprecated, needs refactoring and reimplemntation to use. See TryUpdateAsync for example.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="patchBooking"></param>
+        /// <returns></returns>
         public async Task<bool> PatchAsync(int id, BookingPatchDto patchBooking)
         {
             var existingBooking = await _repo.GetByIdAsync(id);

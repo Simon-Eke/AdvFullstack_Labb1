@@ -26,7 +26,8 @@
 - Abstracting EF Core Unit of Work for better decoupling in the transaction???
 - Is the client side doing the point and click or the backend?
 - Should I restrict bigger groups to find one big table or enable them to add tables together?
-
+- Implement AsNoTracking for get requests which result in pure lookup and no changes.
 ## Todo:
 
 - DONE 
+- Skriv om UpdateBooking men skit i de andra.  - DONE
