@@ -56,7 +56,7 @@ namespace AdvFullstack_Labb1.Controllers
 
         [HttpPut("{id:int}")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> UpdateBooking(int id, [FromBody] BookingUpdateRequestDto request)
         {
@@ -68,7 +68,7 @@ namespace AdvFullstack_Labb1.Controllers
             if (!success)
                 return Conflict();
 
-            return Ok();
+            return NoContent();
         }
 
         [HttpPatch("{id:int}")]
