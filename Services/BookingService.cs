@@ -1,5 +1,7 @@
 ﻿using AdvFullstack_Labb1.Data;
 using AdvFullstack_Labb1.Models.DTOs.Booking;
+using AdvFullstack_Labb1.Models.DTOs.Customer;
+using AdvFullstack_Labb1.Models.DTOs.Table;
 using AdvFullstack_Labb1.Models.Entities;
 using AdvFullstack_Labb1.Repositories.IRepositories;
 using AdvFullstack_Labb1.Services.IServices;
@@ -44,6 +46,32 @@ namespace AdvFullstack_Labb1.Services
             return bookingDtoList;
         }
 
+        public async Task<List<BookingWithDetailsDto>> GetAllWithDetailsAsync()
+        {
+            var bookingsWithDetails = await _context.Bookings
+                .Select(b => new BookingWithDetailsDto
+                {
+                    Id = b.Id,
+                    Customer = new CustomerDto
+                    {
+                        Id = b.Customer.Id,
+                        Name = b.Customer.Name,
+                        PhoneNumber = b.Customer.PhoneNumber
+                    },
+                    Table = new TableDto
+                    {
+                        Id = b.Table.Id,
+                        TableNumber = b.Table.TableNumber,
+                        Seatings = b.Table.Seatings
+                    },
+                    CustomerAmount = b.CustomerAmount,
+                    StartTime = b.StartTime
+                }).ToListAsync();
+
+
+            return bookingsWithDetails;
+        }
+
         public async Task<BookingDto> GetByIdAsync(int bookingId)
         {
             var booking = await _repo.GetByIdAsync(bookingId);
@@ -61,6 +89,36 @@ namespace AdvFullstack_Labb1.Services
             };
 
             return bookingDto;
+        }
+
+        public async Task<BookingWithDetailsDto> GetByIdWithDetailsAsync(int bookingId)
+        {
+            var bookingWithDetails = await _context.Bookings
+                .Where(b => b.Id == bookingId)
+                .Select(b => new BookingWithDetailsDto
+                {
+                    Id = b.Id,
+                    Customer = new CustomerDto
+                    {
+                        Id = b.Customer.Id,
+                        Name = b.Customer.Name,
+                        PhoneNumber = b.Customer.PhoneNumber
+                    },
+                    Table = new TableDto
+                    {
+                        Id = b.Table.Id,
+                        TableNumber = b.Table.TableNumber,
+                        Seatings = b.Table.Seatings
+                    },
+                    CustomerAmount = b.CustomerAmount,
+                    StartTime = b.StartTime
+                })
+                .FirstOrDefaultAsync();
+
+            if (bookingWithDetails == null)
+                return null;
+
+            return bookingWithDetails;
         }
 
         public async Task<bool> TryCreateBookingAsync(BookingRequestDto requestDto)

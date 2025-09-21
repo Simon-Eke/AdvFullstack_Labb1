@@ -27,12 +27,34 @@ namespace AdvFullstack_Labb1.Controllers
             return Ok(bookings);
         }
 
+        [HttpGet("with-details")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<ActionResult<List<BookingWithDetailsDto>>> GetAllWithDetailsAsync()
+        {
+            var bookings = await _service.GetAllWithDetailsAsync();
+
+            return Ok(bookings);
+        }
+
         [HttpGet("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<BookingDto>> GetById(int id)
         {
             var booking = await _service.GetByIdAsync(id);
+
+            if (booking == null)
+                return NotFound();
+
+            return Ok(booking);
+        }
+
+        [HttpGet("{id:int}/with-details")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<BookingWithDetailsDto>> GetByIdWithDetailsAsync(int id)
+        {
+            var booking = await _service.GetByIdWithDetailsAsync(id);
 
             if (booking == null)
                 return NotFound();
