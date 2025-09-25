@@ -27,6 +27,14 @@ namespace AdvFullstack_Labb1
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
+
+                options.AddPolicy("AllowReactClient", builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:5173")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod();
+                });
             });
 
             builder.WebHost.ConfigureKestrel(options =>
@@ -126,6 +134,7 @@ namespace AdvFullstack_Labb1
             app.UseHttpsRedirection();
 
             app.UseCors("AllowMvcClient");
+            app.UseCors("AllowReactClient");
 
             app.UseAuthentication();
             app.UseAuthorization();
