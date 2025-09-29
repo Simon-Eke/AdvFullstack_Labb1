@@ -20,22 +20,16 @@ namespace AdvFullstack_Labb1
 
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowMvcClient", builder =>
+                options.AddPolicy("AllowMvcAndReactClient", builder =>
                 {
                     builder
-                        .WithOrigins("https://localhost:7235")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
-
-                options.AddPolicy("AllowReactClient", builder =>
-                {
-                    builder
-                        .WithOrigins("http://localhost:5173")
+                        .WithOrigins("https://localhost:7235", "http://localhost:5173")
                         .AllowAnyHeader()
                         .AllowAnyMethod();
                 });
             });
+
+            builder.Logging.AddFilter("Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware", LogLevel.Debug);
 
             builder.WebHost.ConfigureKestrel(options =>
             {
@@ -133,8 +127,17 @@ namespace AdvFullstack_Labb1
 
             app.UseHttpsRedirection();
 
-            app.UseCors("AllowMvcClient");
-            app.UseCors("AllowReactClient");
+            // temp cors debugging
+            app.Use(async (context, next) =>
+            {
+                if (context.Request.Method == "OPTIONS")
+                {
+                    Console.WriteLine("Received OPTIONS request to: " + context.Request.Path);
+                }
+                await next();
+            });
+
+            app.UseCors("AllowMvcAndReactClient");
 
             app.UseAuthentication();
             app.UseAuthorization();

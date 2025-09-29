@@ -68,6 +68,7 @@ namespace AdvFullstack_Labb1.Controllers
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         public async Task<IActionResult> ConfirmBooking(BookingRequestDto request)
         {
+            Console.WriteLine("Hello CORS");
             var success = await _service.TryCreateBookingAsync(request);
 
             if (!success)
